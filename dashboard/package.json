@@ -1,0 +1,11 @@
+{
+  "name": "mega-ia-frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "serve .",
+    "build": "echo 'No build step, frontend é estático'"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}
