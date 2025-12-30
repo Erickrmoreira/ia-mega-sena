@@ -3,27 +3,28 @@ function App() {
   const [amount, setAmount] = React.useState(100);
   const [loading, setLoading] = React.useState(false);
 
-const generateGames = async () => {
-  setLoading(true);
-  setGames([]); // Limpa jogos antigos antes de começar
-  
-  try {
-    // Forçamos a conversão para número inteiro aqui
-    const quantity = parseInt(amount, 10);
+  const generateGames = async () => {
+    setLoading(true);
+    setGames([]); 
     
-    const res = await axios.post("/api/generate", {
-      games: quantity,
-    });
-    
-    console.log("Dados recebidos:", res.data);
-    setGames(res.data.games);
-  } catch (e) {
-    console.error("Erro detalhado:", e.response?.data);
-    alert("Erro na API. Verifique o console do navegador.");
-  } finally {
-    setLoading(false);
-  }
-};
+    try {
+      const quantity = parseInt(amount, 10);
+      
+      // ALTERAÇÃO: Usando a URL completa do Render
+      // Substitua 'ia-mega-sena.onrender.com' pela URL que aparece no seu painel do Render
+      const res = await axios.post("https://ia-mega-sena.onrender.com/api/generate", {
+        games: quantity,
+      });
+      
+      console.log("Dados recebidos:", res.data);
+      setGames(res.data.games);
+    } catch (e) {
+      console.error("Erro detalhado:", e.response?.data);
+      alert("Erro na API. Verifique o console do navegador.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="container">
@@ -46,12 +47,10 @@ const generateGames = async () => {
         {games.length > 0 ? (
           games.map((game, i) => (
             <div key={i} className="game" style={{ flexDirection: 'column', alignItems: 'center' }}>
-              {/* NUMERAÇÃO DO JOGO */}
               <small style={{ marginBottom: '8px', color: '#94a3b8', fontWeight: 'bold', fontSize: '0.75rem', textTransform: 'uppercase' }}>
                 Jogo {String(i + 1).padStart(2, '0')}
               </small>
               
-              {/* CONTAINER DAS BOLINHAS */}
               <div style={{ display: 'flex', gap: '8px' }}>
                 {game.map((n, idx) => (
                   <span key={idx} className="number-ball">
@@ -74,4 +73,3 @@ if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(<App />);
 }
-
